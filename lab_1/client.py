@@ -1,4 +1,5 @@
 from socket import socket, AF_INET, SOCK_STREAM, SO_RCVBUF, SOL_SOCKET
+from threading import Thread
 import json
 import random
 
@@ -6,6 +7,17 @@ import random
 host = "localhost"
 port = 8080
 requests = 16
+
+
+def connect(i):
+    s = socket(AF_INET, SOCK_STREAM)
+    s.connect((host, port))
+    msg = {"N": random.randint(1, 100), "request": i}
+    request_msg = json.dumps(msg).encode()
+    s.send(request_msg)
+    server_msg = json.loads(read(s).decode())
+    s.close()
+    print(f"{server_msg['result']} | {server_msg['thread']}")
 
 
 def read(s):
@@ -22,14 +34,8 @@ def read(s):
 
 def main():
     for i in range(1, requests+1):
-        s = socket(AF_INET, SOCK_STREAM)
-        s.connect((host, port))
-        msg = {"N": random.randint(1, 100), "request": i}
-        request_msg = json.dumps(msg).encode()
-        s.send(request_msg)
-        server_msg = json.loads(read(s).decode())
-        s.close()
-        print(f"{server_msg['result']} | {server_msg['thread']}")
+        t = Thread(target=connect, args=(i,))
+        t.start()
 
 
 if __name__ == '__main__':
