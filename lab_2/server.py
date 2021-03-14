@@ -1,25 +1,13 @@
+from .http import *
 import socket
 import select
 import json
-import re
+
 
 IP = "localhost"
 PORT = 8080
 QUEUE = 16
 BUFFER_SIZE = 1024
-
-
-def send_message(client_socket, message):
-    result = json.dumps({"result": str(2 * int(message["N"]) / 13), "request": message["request"]})
-    http = f"HTTP/1.1 200 OK \r\nContent-Type: text/html; " + \
-           f"charset=utf-8 \r\n\r\n{result}"
-    client_socket.sendall(http.encode())
-
-
-def receive_message(message):
-    m = re.search(r"\s([{\[].*?[}\]])$", message.decode()).group(1)
-    m = json.loads(m)
-    return m
 
 
 def main():
@@ -53,8 +41,15 @@ def main():
                     del messages[notified_socket]
                     notified_socket.close()
         for notified_socket in write_sockets:
-            msg = receive_message(messages[notified_socket])
-            send_message(notified_socket, msg)
+            def send_response(m):
+                message = json.loads(m.decode())
+                result = json.dumps({"result": str(2 * int(message["N"]) / 13), "request": message["request"]}).encode()
+                response = Response()
+                notified_socket.send(response.make_response(200, result))
+
+            protocol = HttpRequestParserProtocol(send_response)
+            parser = HttpRequestParserRequest(protocol)
+            parser.feed_data(messages[notified_socket])
             if notified_socket in inputs:
                 inputs.remove(notified_socket)
             outputs.remove(notified_socket)

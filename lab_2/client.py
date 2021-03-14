@@ -1,36 +1,31 @@
 from socket import socket, AF_INET, SOCK_STREAM, SO_RCVBUF, SOL_SOCKET
 from threading import Thread
+from .http import *
 import json
 import random
-import re
 
 IP = "localhost"
 PORT = 8080
 QUEUE = 16
 
 
-def send_message(sct, message):
-    http = f"HTTP/1.1 200 OK \r\nContent-Type: text/html; " + \
-           f"charset=utf-8 \r\n\r\n{message}"
-
-    sct.sendall(http.encode())
-
-
-def receive_message(message):
-    m = re.search(r"\s([{\[].*?[}\]])$", message.decode()).group(1)
-    m = json.loads(m)
-    return m
-
-
 def connect(i):
     s = socket(AF_INET, SOCK_STREAM)
     s.connect((IP, PORT))
-    request_msg = json.dumps({"N": random.randint(1, 100), "request": i})
-    send_message(s, request_msg)
-    response = read(s)
-    server_msg = receive_message(response)
+    request_msg = json.dumps({"N": random.randint(1, 100), "request": i}).encode()
+    request = Request()
+    s.send(request.make_request("GET", request_msg))
+
+    def print_result(m):
+
+        message = json.loads(m.decode())
+        print(message["result"], "|", message["request"])
+
+    protocol = HttpRequestParserProtocol(print_result)
+    parser = HttpRequestParserResponse(protocol)
+    data = read(s)
+    parser.feed_data(data)
     s.close()
-    print(f"{server_msg['result']} | {server_msg['request']}")
 
 
 def read(s):
