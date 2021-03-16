@@ -1,4 +1,4 @@
-from .http import *
+from http_classes import *
 import socket
 import select
 import json

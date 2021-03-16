@@ -1,8 +1,9 @@
 from socket import socket, AF_INET, SOCK_STREAM, SO_RCVBUF, SOL_SOCKET
 from threading import Thread
-from .http import *
+from http_classes import *
 import json
 import random
+
 
 IP = "localhost"
 PORT = 8080

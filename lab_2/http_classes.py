@@ -58,6 +58,7 @@ class HttpRequestParserRequest:
             data = self.buffer.flush()
             self.expected_body_length -= len(data)
             self.protocol.on_body(data)
+            self.parse()
         else:
             self.protocol.on_message_complete()
 
