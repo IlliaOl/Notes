@@ -5,7 +5,7 @@ from django.shortcuts import render
 import os
 import redis
 from django.urls import path
-from .models import BlackListModel
+from .models import BlackListsModel
 from .serializers import BlackListSerializer
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -26,7 +26,7 @@ redis_access = redis.Redis(redis_host, port=6379, db=15)
 class BlackListView(APIView):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.queryset = BlackListModel.objects.all()
+        self.queryset = BlackListsModel.objects.all()
         self.serializer_class = BlackListSerializer
 
     def get(self, request):
@@ -47,7 +47,7 @@ class BlackListView(APIView):
         serializer = self.serializer_class(data=data)
         if not serializer.is_valid():
             return Response(status=400)
-        model = BlackListModel(**serializer.data)
+        model = BlackListsModel(**serializer.data)
         model.pk = serializer.data['id']
         model.save()
         redis_access.delete(model.pk)
@@ -58,7 +58,7 @@ class BlackListView(APIView):
         serializer = self.serializer_class(data=data)
         if not serializer.is_valid():
             return Response(status=400)
-        BlackListModel(**serializer.data).save()
+        BlackListsModel(**serializer.data).save()
         return Response(status=201)
 
     def delete(self, request):

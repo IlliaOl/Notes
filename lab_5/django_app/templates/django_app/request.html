@@ -6,7 +6,7 @@
     <script>
     function get() {
       var id = document.getElementById("get_id").value;
-      const requestURL = "http://127.0.0.1:8000/api/blacklist/?id=" + id;
+      const requestURL = "http://192.168.99.100:8000/api/blacklist/?id=" + id;
       const xhr = new XMLHttpRequest();
       xhr.open("GET", requestURL);
       xhr.responseType = "json";
@@ -23,7 +23,7 @@
       var first_name = document.getElementById("update_first_name").value;
       var last_name = document.getElementById("update_last_name").value;
       var phone_number = document.getElementById("update_phone").value;
-      const requestURL = "http://127.0.0.1:8000/api/blacklist/";
+      const requestURL = "http://192.168.99.100:8000/api/blacklist/";
       const xhr = new XMLHttpRequest();
       xhr.open("POST", requestURL);
       xhr.responseType = "json";
@@ -38,7 +38,7 @@
       var first_name = document.getElementById("create_first_name").value;
       var last_name = document.getElementById("create_last_name").value;
       var phone_number = document.getElementById("create_phone").value;
-      const requestURL = "http://127.0.0.1:8000/api/blacklist/";
+      const requestURL = "http://192.168.99.100:8000/api/blacklist/";
       const xhr = new XMLHttpRequest();
       xhr.open("PUT", requestURL);
       xhr.responseType = "json";
@@ -51,7 +51,7 @@
 
       function del() {
       var x = document.getElementById("delete_id").value;
-      const requestURL = "http://127.0.0.1:8000/api/blacklist/";
+      const requestURL = "http://192.168.99.100:8000/api/blacklist/";
       const xhr = new XMLHttpRequest();
       xhr.open("DELETE", requestURL);
       xhr.responseType = "json";

@@ -1,12 +1,10 @@
 FROM python:3.8
 EXPOSE 80
-WORKDIR ./app
+WORKDIR /app
 
 
-COPY /requirements.txt /requirements.txt
-
-RUN ["pip", "install", "-r", "/requirements.txt"]
+COPY requirements.txt requirements.txt
+RUN ["pip", "install", "-r", "requirements.txt"]
 
 COPY . .
-
-ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+#ENTRYPOINT ["python", "manage.py", "runserver", "0.0.0.0:8000"]

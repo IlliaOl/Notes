@@ -2,10 +2,9 @@ version: '3.8'
 
 services:
   webhost:
-    image: lab_5
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: mydocker.example.invalid/webhost
+    build: .
+    command: ./enterypoint.sh
     environment:
       - REDIS_HOST=redis_server
       - REDIS_PORT=6379
@@ -21,7 +20,7 @@ services:
     ports:
         - "6379:6379"
   migration:
-    image: lab_5_migrate
+    image: mydocker.example.invalid/webhost_migration
     build:
       context: .
       dockerfile: Dockerfile.migration
