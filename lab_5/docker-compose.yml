@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   webhost:
-    image: mydocker.example.invalid/webhost
+    image: lab_5
     build: .
     command: ./enterypoint.sh
     environment:
@@ -19,10 +19,3 @@ services:
     image: redis
     ports:
         - "6379:6379"
-  migration:
-    image: mydocker.example.invalid/webhost_migration
-    build:
-      context: .
-      dockerfile: Dockerfile.migration
-    volumes:
-      - D:\dbdata:/app/database

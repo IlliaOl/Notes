@@ -16,7 +16,7 @@ from django.forms.models import model_to_dict
 
 
 logger = logging.getLogger('django')
-# redis_access = redis.Redis('localhost', port=6379, db=15)
+
 
 redis_host = os.environ.get('REDIS_HOST', 'localhost')
 redis_port = os.environ.get('REDIS_PORT', 6379)
