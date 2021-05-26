@@ -6,7 +6,7 @@ from .forms import NoteForm
 from django.urls import reverse_lazy
 
 
-class NoteListView(LoginRequiredMixin, ListView):
+class List(LoginRequiredMixin, ListView):
 	model = Note
 	template_name = 'note.html'
 	login_url = 'login'
@@ -14,17 +14,7 @@ class NoteListView(LoginRequiredMixin, ListView):
 	ordering = ['-created']
 
 
-class MyNoteListView(LoginRequiredMixin, ListView):
-	model = Note
-	template_name = 'my_notes.html'
-	login_url = 'login'
-	paginate_by = 5
-	ordering = ['-created']
-	def get_queryset(self):
-		return Note.objects.filter(author=self.request.user)
-
-
-class NoteCreateView(LoginRequiredMixin, CreateView):
+class Create(LoginRequiredMixin, CreateView):
 	model = Note
 	template_name = 'note_new.html'
 	form_class = NoteForm
@@ -36,11 +26,11 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
-class HomePageView(TemplateView):
+class HomePage(TemplateView):
 	template_name = 'index.html'
 
 
-class NoteUpdateView(LoginRequiredMixin, UpdateView):
+class Update(LoginRequiredMixin, UpdateView):
 	model = Note
 	form_class = NoteForm
 	template_name = 'note_edit.html'
@@ -48,7 +38,7 @@ class NoteUpdateView(LoginRequiredMixin, UpdateView):
 	login_url = 'login'
 
 
-class NoteDeleteView(LoginRequiredMixin, DeleteView):
+class Delete(LoginRequiredMixin, DeleteView):
 	model = Note
 	template_name = 'note_delete.html'
 	success_url = reverse_lazy('note_list')
