@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Notes{% endblock title %}
+
+{% block content %}
+  <h1>Notes</h1>
+  <hr>
+
+  {% for note in object_list %}
+    <div class="card">
+      <div class="card-header">
+        <span class="font-weight-bold">{{ note.text }}</span>
+        <br>
+        <span class="text-muted"> {{ note.author }} &nbsp;|&nbsp; {{ note.created }}</span>
+      </div>
+      <div class="card-body">
+        <a href="{% url 'note_edit' note.pk %}"><i class="fa fa-pencil"></i> </a>  &nbsp;|&nbsp;
+         <a href="{% url 'note_delete' note.pk %}"><i class="fa fa-trash"></i></a>
+      </div>
+    </div>
+    <br />
+
+    
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav aria-label="Page navigation conatiner"></nav>
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">PREV </a></li>
+      {% endif %}
+      {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT </a></li>
+
+      {% endif %}
+    </ul>
+    </nav>
+  {% endif %}
+  
+{% endblock content %}
+

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+  <br>
+  <h1 class="display-3">Take Notes easily</h1>
+  <br>
+  <p class="lead">
+    <a class="btn btn-dark btn-lg" href="{% url 'note_list' %}"
+    role="button">Make a Note</a>
+  </p>
+
+{% endblock content %}
