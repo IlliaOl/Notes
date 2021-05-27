@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  webhost:
+    image: dkr
+    build: .
+    command: ./entrypoint.sh
+    volumes:
+      - D:\dbdata:/app/database
+    ports:
+      - "8000:8000"

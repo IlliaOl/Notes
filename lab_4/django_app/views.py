@@ -12,8 +12,6 @@ from rest_framework.views import APIView
 from django.forms.models import model_to_dict
 
 
-
-
 logger = logging.getLogger('django')
 redis_access = redis.Redis('localhost', port=6379, db=15)
 
